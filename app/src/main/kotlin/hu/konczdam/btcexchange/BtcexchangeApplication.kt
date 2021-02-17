@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class BtcexchangeApplication
 
 fun main(args: Array<String>) {
-	runApplication<BtcexchangeApplication>(*args)
+    runApplication<BtcexchangeApplication>(*args)
 }
