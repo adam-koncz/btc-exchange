@@ -1,0 +1,12 @@
+version: '2'
+services:
+    db:
+        container_name: sample_db
+        image: postgres:9.5
+        environment:
+            - POSTGRES_USER=postgres_user
+            - POSTGRES_PASSWORD=postgres_password
+            - POSTGRES_DB=postgres_db
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+            - 5432:5432
