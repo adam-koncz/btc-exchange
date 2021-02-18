@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class AuthTokenFilter: OncePerRequestFilter() {
+class AuthTokenFilter : OncePerRequestFilter() {
 
     @Autowired
     private lateinit var jwtUtils: JwtUtils
@@ -44,10 +44,11 @@ class AuthTokenFilter: OncePerRequestFilter() {
             authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
             SecurityContextHolder.getContext().authentication = authentication
         }
+        filterChain.doFilter(request, response)
     }
 
     private fun HttpServletRequest.extractJwtToken(): String? {
-        val headerAuth = this.getHeader("Authentication")
+        val headerAuth = this.getHeader("Authorization")
 
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
             return headerAuth.substring(7)

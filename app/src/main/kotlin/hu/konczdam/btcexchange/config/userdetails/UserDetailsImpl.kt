@@ -1,7 +1,6 @@
 package hu.konczdam.btcexchange.config.userdetails
 
 import hu.konczdam.btcexchange.model.User
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 

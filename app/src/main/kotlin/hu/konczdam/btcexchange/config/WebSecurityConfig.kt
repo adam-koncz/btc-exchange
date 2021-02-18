@@ -23,6 +23,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Bean
     fun authenticationJwtTokenFilter(): AuthTokenFilter = AuthTokenFilter()
 
+    @Bean
+    override fun authenticationManagerBean() = super.authenticationManagerBean()
+
     override fun configure(http: HttpSecurity) {
         http
             .csrf().disable()

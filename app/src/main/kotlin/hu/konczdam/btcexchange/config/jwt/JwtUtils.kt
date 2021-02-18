@@ -1,6 +1,6 @@
 package hu.konczdam.btcexchange.config.jwt
 
-import hu.konczdam.btcexchange.config.userdetails.UserDetailsImpl
+import hu.konczdam.btcexchange.model.User
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
@@ -9,7 +9,6 @@ import io.jsonwebtoken.SignatureException
 import io.jsonwebtoken.UnsupportedJwtException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
 import java.util.Date
@@ -24,14 +23,12 @@ class JwtUtils {
         private val logger = LoggerFactory.getLogger(JwtUtils::class.java)
     }
 
-    fun generateJwtToken(authentication: Authentication): String {
-        val userPrincipal = authentication.principal as UserDetailsImpl
-
+    fun generateJwtToken(user: User): String {
         val now = Date()
         return Jwts.builder()
-            .setId(userPrincipal.id.toString())
+            .setId(user.id.toString())
             .setIssuedAt(now)
-            .setSubject(userPrincipal.username)
+            .setSubject(user.username)
             .setExpiration(Date(Long.MAX_VALUE))
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
             .compact()
