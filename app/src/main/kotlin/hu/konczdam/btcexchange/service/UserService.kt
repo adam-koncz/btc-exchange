@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class UserService: IUserService {
+class UserService : IUserService {
 
     @Autowired
-    private lateinit var userRepository : UserRepository
+    private lateinit var userRepository: UserRepository
 }
