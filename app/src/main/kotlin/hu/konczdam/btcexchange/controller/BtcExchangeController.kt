@@ -4,6 +4,7 @@ import hu.konczdam.btcexchange.config.jwt.JwtUtils
 import hu.konczdam.btcexchange.config.userdetails.UserDetailsImpl
 import hu.konczdam.btcexchange.dtos.request.BalanceTopUpRequestDTO
 import hu.konczdam.btcexchange.dtos.request.RegistrationRequestDTO
+import hu.konczdam.btcexchange.dtos.response.BalanceDTO
 import hu.konczdam.btcexchange.dtos.response.SuccesDTO
 import hu.konczdam.btcexchange.dtos.response.TokenDTO
 import hu.konczdam.btcexchange.service.IUserService
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -46,6 +48,15 @@ class BtcExchangeController {
             amount = balanceTopUpRequestDTO.amount
         )
         return ResponseEntity.ok(SuccesDTO(true))
+    }
+
+    @GetMapping("/balance")
+    fun getBalance(
+        principal: UsernamePasswordAuthenticationToken
+    ): ResponseEntity<BalanceDTO> {
+        val userId = getUserIdFromPrincipal(principal)
+        val userBalance = userService.getUserBalance(userId)
+        return ResponseEntity.ok(userBalance)
     }
 
     private fun getUserIdFromPrincipal(principal: UsernamePasswordAuthenticationToken): Long {
