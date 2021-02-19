@@ -3,10 +3,13 @@ package hu.konczdam.btcexchange.controller
 import hu.konczdam.btcexchange.config.jwt.JwtUtils
 import hu.konczdam.btcexchange.config.userdetails.UserDetailsImpl
 import hu.konczdam.btcexchange.dtos.request.BalanceTopUpRequestDTO
+import hu.konczdam.btcexchange.dtos.request.PostMarketOrderDTO
 import hu.konczdam.btcexchange.dtos.request.RegistrationRequestDTO
 import hu.konczdam.btcexchange.dtos.response.BalanceDTO
+import hu.konczdam.btcexchange.dtos.response.PostMarketOrderResponseDTO
 import hu.konczdam.btcexchange.dtos.response.SuccesDTO
 import hu.konczdam.btcexchange.dtos.response.TokenDTO
+import hu.konczdam.btcexchange.service.IOrderService
 import hu.konczdam.btcexchange.service.IUserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -22,6 +25,9 @@ class BtcExchangeController {
 
     @Autowired
     private lateinit var userService: IUserService
+
+    @Autowired
+    private lateinit var orderService: IOrderService
 
     @Autowired
     private lateinit var jwtUtils: JwtUtils
@@ -57,6 +63,20 @@ class BtcExchangeController {
         val userId = getUserIdFromPrincipal(principal)
         val userBalance = userService.getUserBalance(userId)
         return ResponseEntity.ok(userBalance)
+    }
+
+    @PostMapping("market_order")
+    fun postMarketOrder(
+        principal: UsernamePasswordAuthenticationToken,
+        postMarketOrderDTO: PostMarketOrderDTO,
+    ): ResponseEntity<PostMarketOrderResponseDTO> {
+        val userId = getUserIdFromPrincipal(principal)
+        val response: PostMarketOrderResponseDTO = orderService.postAndResolveMarketOrderForUser(
+            userId = userId,
+            orderDto = postMarketOrderDTO
+        )
+
+        return ResponseEntity.ok(response)
     }
 
     private fun getUserIdFromPrincipal(principal: UsernamePasswordAuthenticationToken): Long {

@@ -5,11 +5,17 @@ import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.Index
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 @Entity
-@Table(name = "standing_orders")
+@Table(
+    name = "standing_orders",
+    indexes = arrayOf(
+        Index(name = "orderStateAndorderTypeAndLimitPrice", columnList = "orderState, orderType, limitPrice")
+    ),
+)
 data class Order(
 
     val orderType: OrderType,
